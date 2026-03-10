@@ -4,7 +4,7 @@
 Apply various statistical tests (t-tests, z-tests, ANOVA, Chi-Squared) to evaluate research hypotheses and interpret significance levels.
 
 ## Implementation
-- **Tool:** Python 3.12 with SciPy and Statsmodels.
+- **Tool:** Python 3.12 and R Programming and Statsmodels.
 - **Tests Performed:**
   - One-Sample & Two-Sample t-tests for mean evaluation.
   - Paired t-tests for dependent samples.
