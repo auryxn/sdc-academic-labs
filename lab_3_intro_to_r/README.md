@@ -1,19 +1,20 @@
-# Lab #4: Introduction to R
+# Lab #3: Introduction to R & Data Visualization
 
 ## Objective
-The goal of this lab is to perform exploratory data analysis (EDA) and visualization on the **Iris** and **Mtcars** datasets using R.
+Explore R's core data visualization libraries (ggplot2, Tidyverse) using classic datasets like Iris and Mtcars.
 
 ## Implementation
-- **Tool:** R Programming Language.
-- **Libraries:** ggplot2, dplyr.
-- **Tasks:**
-  - Structural analysis and summaries of built-in datasets.
-  - Visualization of relationships (Boxplots, Scatter plots, Bar graphs).
-  - Statistical analysis (ANOVA for species comparison, Correlation test for performance).
+- **Tool:** R 4.2+
+- **Key Libraries:** Tidyverse, ggplot2, dplyr.
+- **Visuals Created:**
+  - Simple scatter with base R.
+  - Multi-class scatter with ggplot2.
+  - Filtered data visualization (excluding specific categories).
+  - Categorical analysis of car performance.
 
-## Key Findings
-- **Iris:** ANOVA confirms highly significant differences in sepal lengths between species ( < 2e-16$).
-- **Mtcars:** Strong negative correlation observed between horsepower and fuel efficiency.
+## Key Statistical Findings
+- **Correlation:** Strong negative correlation found between Horsepower and MPG in mtcars.
+- **ANOVA:** Significant variation in sepal characteristics across iris species.
 
 ## How to run
 `Rscript analysis.R`
