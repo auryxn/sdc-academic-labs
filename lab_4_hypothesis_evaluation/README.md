@@ -1,4 +1,4 @@
-# Lab #3: Hypothesis Evaluation
+# Lab #4: Hypothesis Evaluation
 
 ## Objective
 Apply various statistical tests (t-tests, z-tests, ANOVA, Chi-Squared) to evaluate research hypotheses and interpret significance levels.
