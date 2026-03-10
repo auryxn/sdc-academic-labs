@@ -12,9 +12,12 @@ Explore R's core data visualization libraries (ggplot2, Tidyverse) using classic
   - Filtered data visualization (excluding specific categories).
   - Categorical analysis of car performance.
 
-## Key Statistical Findings
-- **Correlation:** Strong negative correlation found between Horsepower and MPG in mtcars.
-- **ANOVA:** Significant variation in sepal characteristics across iris species.
+## 🛡️ Защита работы (Как рассказывать преподавателю)
 
-## How to run
-`Rscript analysis.R`
+1.  **Цель работы:** "Освоение языка программирования R для профессиональной визуализации и статистического анализа данных."
+2.  **Что сделано (Техническая часть):**
+    *   "Работал с классическими датасетами: **Iris** (морфология цветов) и **Mtcars** (характеристики автомобилей)."
+    *   "Применил философию `Grammar of Graphics` с помощью библиотеки **ggplot2**."
+    *   "Использовал пайплайны (оператор `%>%`) из **Tidyverse** для фильтрации данных перед визуализацией."
+3.  **Результаты:** "Проведен корреляционный тест между мощностью двигателя (HP) и расходом топлива (MPG). Выявлена сильная отрицательная корреляция (чем выше мощность, тем ниже экономичность)."
+4.  **Статистика:** "Проведен однофакторный дисперсионный анализ (**ANOVA**) для подтверждения значимых отличий в параметрах ирисов разных видов."

@@ -3,22 +3,13 @@
 ## Objective
 Apply Principal Component Analysis (PCA) for dimensionality reduction, perform Cluster Analysis (KMeans), and conduct Natural Language Processing (NLP) on textual data.
 
-## Tasks & Methodology
-### 1. Multidimensional Analysis (Titanic)
-- **Features Used:** Pclass, Sex, Age, SibSp, Parch, Fare.
-- **Scaling:** StandardScaler used for normalization.
-- **PCA:** Reduced dimensions while maintaining 90% variance.
-- **Clustering:** KMeans applied to PCA components to find underlying groupings.
+## 🛡️ Защита работы (Как рассказывать преподавателю)
 
-### 2. Text Analysis
-- **Pipeline:** Cleansing -> Tokenization -> Stopword Removal -> Stemming/Lemmatization.
-- **Stemmers Compared:** Porter, Lancaster, Snowball.
-- **Visualization:** Word Cloud and Frequency histograms to identify key themes.
-
-## Key Findings
-- **PCA:** Usually requires 5 components to explain >90% of the variance for the selected features.
-- **Clustering:** The 2 clusters identified by KMeans often align closely with gender and class survival probabilities.
-- **NLP:** Lemmatization provides more linguistically accurate roots compared to Stemming, which often chops off word endings aggressively.
-
-## How to run
-`python analysis.py`
+1.  **Цель работы:** "Изучение методов машинного обучения без учителя (кластеризация и снижение размерности) и основ обработки естественного языка (NLP)."
+2.  **Что сделано (Техническая часть - ML):**
+    *   **PCA (Метод главных компонент):** "Провел декомпозицию признаков Титаника. Установил, что 5 компонент достаточно для объяснения 90% дисперсии данных. Это позволило визуализировать 6-мерные данные на 2D-плоскости."
+    *   **Кластеризация:** "Применил алгоритм **K-Means**. Он автоматически выделил группы пассажиров, которые по характеристикам (пол, класс, цена билета) наиболее схожи."
+3.  **Что сделано (Техническая часть - NLP):**
+    *   "Реализовал полный цикл обработки текста: токенизация, удаление стоп-слов, стемминг и лемматизация."
+    *   "Сравнил работу стеммеров **Porter**, **Lancaster** и **Snowball**. Лемматизация оказалась точнее, так как она учитывает морфологию и возвращает слово к его словарной форме."
+4.  **Визуализация:** "Построил облако слов (**WordCloud**), где размер слова зависит от частоты его упоминания в тексте."
