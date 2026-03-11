@@ -5,8 +5,9 @@ public class Main {
         int targetIncome = 10000;
         int daysInMonth = 22;
 
-        dailyRate = targetIncome / daysInMonth;
+        int dailyRate = targetIncome / daysInMonth;
+        int remainder =  targetIncome % daysInMonth;
         System.out.println(targetIncome);
-        System.out.println(%targetIncome);
+        System.out.println(remainder);
     }
 }
