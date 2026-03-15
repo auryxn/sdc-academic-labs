@@ -1,0 +1,37 @@
+# Smoke Test Cases for Customer Login Section
+# Target: https://parabank.parasoft.com/parabank/index.htm
+# Date: 2026-03-15
+
+## TC-01: Verify successful login with valid credentials
+**Pre-condition:** User is on the ParaBank home page.
+**Steps:**
+1. Enter a valid username in the "Username" field.
+2. Enter a valid password in the "Password" field.
+3. Click the "Log In" button.
+**Expected Result:** User is successfully logged in and redirected to the Account Overview page.
+
+## TC-02: Verify login failure with invalid credentials
+**Pre-condition:** User is on the ParaBank home page.
+**Steps:**
+1. Enter an invalid username in the "Username" field.
+2. Enter an invalid password in the "Password" field.
+3. Click the "Log In" button.
+**Expected Result:** Login fails, and an appropriate error message is displayed (e.g., "The username and password could not be verified.").
+
+## TC-03: Verify redirection to "Forgot login info?" page
+**Pre-condition:** User is on the ParaBank home page.
+**Steps:**
+1. Click on the "Forgot login info?" link.
+**Expected Result:** User is redirected to the Customer Lookup page.
+
+## TC-04: Verify redirection to "Register" page
+**Pre-condition:** User is on the ParaBank home page.
+**Steps:**
+1. Click on the "Register" link.
+**Expected Result:** User is redirected to the Signing Up page.
+
+## TC-05: Verify login form field availability
+**Pre-condition:** User is on the ParaBank home page.
+**Steps:**
+1. Observe the "Customer Login" section.
+**Expected Result:** The "Username" field, "Password" field, and "Log In" button are all visible and accessible.
