@@ -3,98 +3,90 @@
 **Группа:** LR-23-JS
 **Имя Фамилия:** Максим Иванов (Пример)
 **Дата:** 25.03.2026
-**Вариант:** 1 (выбран на основе примера в таблице)
+**ВАРИАНТ:** 3 (ВЫБРАН ИЗ ТАБЛИЦЫ)
 
 ---
 
-## 🎯 Цель работы
-Освоение принципов трансляции адресов сетевого уровня (NAT/PAT) в маршрутизаторах Cisco и настройка безопасности портов (Port Security) на коммутаторах.
+## 🛠️ Параметры сети (Вариант 3)
+
+| Сеть | Диапазон / IP | Маска | Последний доступный (Router) | Первый доступный (Hosts) |
+| :--- | :--- | :--- | :--- | :--- |
+| **NET A (LAN)** | 192.168.28.0 | /24 (255.255.255.0) | 192.168.28.254 | 192.168.28.1 |
+| **NET B (Server)** | 10.9.28.0 | /24 (255.255.255.0) | 10.9.28.254 | 10.9.28.1 |
+| **Сеть C (Internal Global)** | 183.6.9.8 | /29 (255.255.255.248) | 183.6.9.14 | 183.6.9.9 |
+| **Сеть D (ISP)** | 68.160.0.0 | /12 (255.240.0.0) | 68.175.255.254 | 68.160.0.1 |
 
 ---
 
-## 🛠️ Параметры сети (Вариант 1)
+## 💻 Конфигурация оборудования (CLI)
 
-| Сеть | Диапазон / IP |
-| :--- | :--- |
-| **NET A** | 172.24.26.0/24 |
-| **NET B** | 192.168.26.0/24 |
-| **Сеть C (Internal Global)** | 18.3.0.0/16 |
-| **Сеть D (ISP)** | 153.2.48.0/20 |
-
-### Назначение IP адресов:
-*   **Интерфейсы роутеров:** Последний доступный адрес подсети.
-*   **Компьютеры/Серверы:** Первый доступный адрес подсети.
-
----
-
-## 💻 Конфигурация оборудования
-
-### 1. Настройка маршрутизатора NAT (Router NAT)
+### 1. Маршрутизатор NAT (Router NAT)
 
 #### Интерфейсы:
 ```ios
 interface Gig0/0 (inside)
- ip address 172.24.26.254 255.255.255.0
+ ip address 192.168.28.254 255.255.255.0
  ip nat inside
 
-interface Gig0/1 (outside)
- ip address 18.3.255.254 255.255.0.0
+interface Gig0/1 (inside - servers)
+ ip address 10.9.28.254 255.255.255.0
+ ip nat inside
+
+interface Gig0/2 (outside)
+ ip address 183.6.9.14 255.255.255.248
  ip nat outside
 
-ip route 0.0.0.0 0.0.0.0 18.3.0.1  (Маршрут на ISP)
+ip route 0.0.0.0 0.0.0.0 183.6.9.9  (Маршрут на ISP)
 ```
 
-#### Статический NAT (для серверов):
+#### Статическая трансляция (NAT) для серверов:
+*   **Server 1:** 10.9.28.1 -> 183.6.9.10
+*   **Server 2:** 10.9.28.2 -> 183.6.9.11
 ```ios
-ip nat inside source static 192.168.26.1 18.3.0.10 (Server 1)
-ip nat inside source static 192.168.26.2 18.3.0.11 (Server 2)
+ip nat inside source static 10.9.28.1 183.6.9.10
+ip nat inside source static 10.9.28.2 183.6.9.11
 ```
 
-#### PAT для сети NET A:
+#### Настройка PAT для сети NET A:
 ```ios
-access-list 1 permit 172.24.26.0 0.0.0.255
-ip nat inside source list 1 interface Gig0/1 overload
+access-list 1 permit 192.168.28.0 0.0.0.255
+ip nat inside source list 1 interface Gig0/2 overload
 ```
 
-### 2. Настройка коммутатора (Switch 1) - Port Security
+### 2. Коммутатор (Switch 1) - Port Security (Вариант 3)
 
 | Порт | Тип безопасности | Режим нарушения (Violation) |
 | :--- | :--- | :--- |
-| **Fa0/1 (PC1)** | Static | Protect |
-| **Fa0/2 (PC2)** | Sticky | Shutdown |
+| **Fa0/1 (PC1)** | Sticky | Shutdown |
+| **Fa0/2 (PC2)** | Dynamic | Restrict |
 
-#### Команды:
+#### Команды для Switch 1:
 ```ios
-interface Fa0/1
+interface Fa0/1 (PC1)
  switchport mode access
  switchport port-security
- switchport port-security violation protect
- switchport port-security mac-address <MAC_PC1>
-
-interface Fa0/2
- switchport mode access
- switchport port-security
- switchport port-security violation shutdown
  switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+
+interface Fa0/2 (PC2)
+ switchport mode access
+ switchport port-security
+ switchport port-security violation restrict
 ```
 
 ---
 
-## ✅ Проверка работоспособности
-
-1.  **Ping:** Проверка связи между PC1/PC2 и серверами.
-2.  **NAT Table:** `show ip nat translations` — проверка активных трансляций.
-3.  **Port Security Test:** 
-    *   При переподключении PC1 к Fa0/2 порт Fa0/2 должен перейти в статус `err-disabled` (Shutdown), так как MAC-адрес не совпадает со "sticky" адресом PC2.
-    *   При переподключении PC2 к Fa0/1 трафик должен блокироваться (Protect) без выключения порта.
+## ✅ Проверка (Команды в Packet Tracer)
+1.  **Проверка NAT:** `show ip nat translations`
+2.  **Проверка Port Security:** `show port-security interface Fa0/1` и `show port-security interface Fa0/2`.
+3.  **Тест безопасности:** Переподключите PC1 к Fa0/2. Порт Fa0/1 должен перейти в статус `err-disabled` (красный индикатор), так как MAC "прилип" (sticky) к нему.
 
 ---
 
-## 📝 Контрольные вопросы (Кратко)
-
-1.  **Зачем нужен NAT?** Для экономии публичных IPv4 адресов и скрытия внутренней структуры сети.
-2.  **Плюсы/Минусы:** Плюсы — безопасность и экономия адресов. Минусы — задержки при трансляции и сложности с некоторыми протоколами (IPsec, FTP).
-3.  **PAT vs Static NAT:** Static NAT — 1:1 (постоянный адрес для сервера). PAT — N:1 (много хостов через один IP роутера с использованием портов).
+## 📝 Контрольные вопросы
+1.  **Зачем NAT?** Для сохранения ограниченного пула публичных IPv4-адресов и обеспечения базового уровня безопасности.
+2.  **PAT vs Static NAT:** Static NAT резервирует 1 публичный IP за 1 внутренним (обычно для серверов). PAT (Overload) позволяет всей локальной сети выходить в интернет через 1 общий IP маршрутизатора.
+3.  **Порт Секьюрити:** Предотвращает несанкционированное подключение сторонних устройств к сети предприятия.
 
 ---
-**Файл проекта:** `LR-23-JS-Maxim_Ivanov-Lab8.pkt` 🦾
+**Имя файла:** `LR-23-JS-Maxim_Ivanov-Lab8_V3.pkt` 🦾
