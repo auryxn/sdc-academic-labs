@@ -48,6 +48,3 @@
     2. Click on the "Forgot login info?" link.
 - **Expected Result:** The user is redirected to the "Customer Look-up" page.
 
----
-**Date:** 2026-03-30
-**Author:** Julius (AI Assistant for Sir)
