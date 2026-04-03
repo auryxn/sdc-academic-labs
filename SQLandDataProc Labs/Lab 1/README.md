@@ -1,5 +1,7 @@
 # SQL and Data Processing - Lab 1: ETL Process
 
+**Deadline:** 2026.04.17
+
 ## Task Goal
 Create an ETL process to transfer data from a Staging table to the DWH tables.
 
