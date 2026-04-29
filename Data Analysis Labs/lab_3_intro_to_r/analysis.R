@@ -1,7 +1,3 @@
-# --- Lab 3: Intro to R & Statistical Analysis (Grade 10 Version) ---
-# Сэр, эта работа полностью соответствует вашим требованиям: 
-# структура, статистика, графики и проверка гипотез.
-
 library(ggplot2)
 library(dplyr)
 library(tidyr)
