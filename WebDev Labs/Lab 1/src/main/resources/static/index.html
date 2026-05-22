@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SubZero Visual API</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 24px; }
+        h1, h2 { margin-bottom: 8px; }
+        section { border: 1px solid #ccc; padding: 16px; margin-bottom: 16px; border-radius: 8px; }
+        .row { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
+        input { padding: 6px; }
+        button { padding: 6px 10px; cursor: pointer; }
+        pre { background: #f7f7f7; padding: 10px; border-radius: 6px; overflow: auto; }
+    </style>
+</head>
+<body>
+<h1>SubZero Visual Interface</h1>
+
+<section>
+    <h2>Users</h2>
+    <div class="row">
+        <input id="userPage" type="number" value="0" min="0" placeholder="page" />
+        <input id="userSize" type="number" value="5" min="1" placeholder="size" />
+        <button onclick="loadUsers()">Load users (pagination)</button>
+    </div>
+    <div class="row">
+        <input id="userId" type="number" placeholder="user id" />
+        <button onclick="getUserById()">Get user by id</button>
+        <button onclick="deleteUser()">Delete user</button>
+    </div>
+    <div class="row">
+        <input id="userName" placeholder="full name" />
+        <input id="userEmail" placeholder="email" />
+        <button onclick="createUser()">Add user</button>
+    </div>
+    <pre id="usersOutput"></pre>
+</section>
+
+<section>
+    <h2>Subscriptions</h2>
+    <div class="row">
+        <input id="subPage" type="number" value="0" min="0" placeholder="page" />
+        <input id="subSize" type="number" value="5" min="1" placeholder="size" />
+        <button onclick="loadSubscriptions()">Load subscriptions (pagination)</button>
+    </div>
+    <div class="row">
+        <input id="subId" type="number" placeholder="subscription id" />
+        <button onclick="getSubscriptionById()">Get subscription by id</button>
+        <button onclick="deleteSubscription()">Delete subscription</button>
+    </div>
+    <div class="row">
+        <input id="subName" placeholder="name" />
+        <input id="subPrice" type="number" step="0.01" placeholder="price" />
+        <input id="subCurrency" placeholder="currency (USD)" />
+        <input id="subBillingCycle" placeholder="billing cycle (MONTHLY)" />
+        <input id="subDate" type="date" />
+        <button onclick="createSubscription()">Add subscription</button>
+    </div>
+    <pre id="subsOutput"></pre>
+</section>
+
+<script>
+    const print = (id, data) => document.getElementById(id).textContent = JSON.stringify(data, null, 2);
+
+    async function request(url, options = {}) {
+        const response = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...options });
+        const text = await response.text();
+        if (!text) return { status: response.status };
+        try { return JSON.parse(text); } catch { return { status: response.status, body: text }; }
+    }
+
+    async function loadUsers() {
+        const page = document.getElementById('userPage').value;
+        const size = document.getElementById('userSize').value;
+        print('usersOutput', await request(`/api/users?page=${page}&size=${size}`));
+    }
+
+    async function getUserById() {
+        const id = document.getElementById('userId').value;
+        print('usersOutput', await request(`/api/users/${id}`));
+    }
+
+    async function createUser() {
+        const fullName = document.getElementById('userName').value;
+        const email = document.getElementById('userEmail').value;
+        print('usersOutput', await request('/api/users', { method: 'POST', body: JSON.stringify({ fullName, email, active: true }) }));
+    }
+
+    async function deleteUser() {
+        const id = document.getElementById('userId').value;
+        print('usersOutput', await request(`/api/users/${id}`, { method: 'DELETE' }));
+    }
+
+    async function loadSubscriptions() {
+        const page = document.getElementById('subPage').value;
+        const size = document.getElementById('subSize').value;
+        print('subsOutput', await request(`/api/subscriptions?page=${page}&size=${size}`));
+    }
+
+    async function getSubscriptionById() {
+        const id = document.getElementById('subId').value;
+        print('subsOutput', await request(`/api/subscriptions/${id}`));
+    }
+
+    async function createSubscription() {
+        const name = document.getElementById('subName').value;
+        const price = document.getElementById('subPrice').value;
+        const currency = document.getElementById('subCurrency').value || 'USD';
+        const billingCycle = document.getElementById('subBillingCycle').value || 'MONTHLY';
+        const nextBillingDate = document.getElementById('subDate').value;
+        print('subsOutput', await request('/api/subscriptions', {
+            method: 'POST',
+            body: JSON.stringify({ name, price, currency, billingCycle, nextBillingDate, active: true })
+        }));
+    }
+
+    async function deleteSubscription() {
+        const id = document.getElementById('subId').value;
+        print('subsOutput', await request(`/api/subscriptions/${id}`, { method: 'DELETE' }));
+    }
+</script>
+</body>
+</html>

@@ -3,6 +3,8 @@ package ai.julius.subzero.controller;
 import ai.julius.subzero.domain.Subscription;
 import ai.julius.subzero.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +18,8 @@ public class SubscriptionController {
     private final SubscriptionService service;
 
     @GetMapping
-    public List<Subscription> getAll() {
-        return service.getAll();
+    public Page<Subscription> getAll(Pageable pageable) {
+        return service.getAll(pageable);
     }
 
     @GetMapping("/active")

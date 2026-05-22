@@ -3,6 +3,8 @@ package ai.julius.subzero.service;
 import ai.julius.subzero.domain.Subscription;
 import ai.julius.subzero.repository.SubscriptionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +16,8 @@ public class SubscriptionService {
 
     private final SubscriptionRepository repository;
 
-    public List<Subscription> getAll() {
-        return repository.findAll();
+    public Page<Subscription> getAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public List<Subscription> getActive() {
