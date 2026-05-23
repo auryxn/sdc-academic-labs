@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu Items</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-4">
+    <h1>📋 Menu Items</h1>
+    <div class="mb-3">
+        <a href="/" class="btn btn-outline-secondary btn-sm">← Home</a>
+        <a href="/menu-items/new" class="btn btn-success btn-sm">+ New Menu Item</a>
+    </div>
+
+    <!-- Search -->
+    <form th:action="@{/menu-items}" method="get" class="row g-2 mb-4">
+        <div class="col-md-3">
+            <input type="text" name="name" class="form-control" placeholder="Search by name"
+                   th:value="${search.name}">
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="category" class="form-control" placeholder="Search by category"
+                   th:value="${search.category}">
+        </div>
+        <div class="col-md-2">
+            <input type="number" name="restaurantId" class="form-control" placeholder="Restaurant ID"
+                   th:value="${search.restaurantId}">
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-info w-100">Search</button>
+        </div>
+        <div class="col-md-2">
+            <a href="/menu-items" class="btn btn-outline-secondary w-100">Reset</a>
+        </div>
+    </form>
+
+    <!-- Table -->
+    <div th:if="${#lists.isEmpty(items)}" class="alert alert-info">No menu items found.</div>
+    <table th:unless="${#lists.isEmpty(items)}" class="table table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Restaurant</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${items}">
+            <td th:text="${item.id}">1</td>
+            <td><a th:href="@{/menu-items/{id}(id=${item.id})}" th:text="${item.name}">Dish</a></td>
+            <td th:text="${item.category}">Category</td>
+            <td th:text="${item.formattedPrice}">€0.00</td>
+            <td>
+                <a th:href="@{/restaurants/{id}(id=${item.restaurantId})}" th:text="${item.restaurantName}">Restaurant</a>
+            </td>
+            <td>
+                <a th:href="@{/menu-items/{id}/edit(id=${item.id})}" class="btn btn-sm btn-warning">Edit</a>
+                <form th:action="@{/menu-items/{id}/delete(id=${item.id})}" method="post" style="display:inline"
+                      onsubmit="return confirm('Delete this item?');">
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-4">
+    <h1 th:text="${restaurant.name}">Restaurant Name</h1>
+    <div class="mb-3">
+        <a href="/restaurants" class="btn btn-outline-secondary btn-sm">← All Restaurants</a>
+        <a th:href="@{/restaurants/{id}/edit(id=${restaurant.id})}" class="btn btn-warning btn-sm">Edit</a>
+        <form th:action="@{/restaurants/{id}/delete(id=${restaurant.id})}" method="post" style="display:inline"
+              onsubmit="return confirm('Delete this restaurant?');">
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+        <a th:href="@{/menu-items/new(restaurantId=${restaurant.id})}" class="btn btn-success btn-sm">+ Add Menu Item</a>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <p><strong>ID:</strong> <span th:text="${restaurant.id}">1</span></p>
+            <p><strong>Cuisine:</strong> <span th:text="${restaurant.cuisine}">Italian</span></p>
+            <p><strong>Address:</strong> <span th:text="${restaurant.address}">Address</span></p>
+        </div>
+    </div>
+
+    <h3>Menu Items</h3>
+    <div th:if="${#lists.isEmpty(restaurant.menuItems)}" class="alert alert-info">No menu items yet.</div>
+    <table th:unless="${#lists.isEmpty(restaurant.menuItems)}" class="table table-sm table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="mi : ${restaurant.menuItems}">
+            <td th:text="${mi.id}">1</td>
+            <td><a th:href="@{/menu-items/{id}(id=${mi.id})}" th:text="${mi.name}">Dish</a></td>
+            <td th:text="${mi.category}">Category</td>
+            <td th:text="${mi.formattedPrice}">€0.00</td>
+            <td>
+                <a th:href="@{/menu-items/{id}/edit(id=${mi.id})}" class="btn btn-sm btn-warning">Edit</a>
+                <form th:action="@{/menu-items/{id}/delete(id=${mi.id})}" method="post" style="display:inline"
+                      onsubmit="return confirm('Delete menu item?');">
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

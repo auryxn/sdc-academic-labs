@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurants</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-4">
+    <h1>🍽️ Restaurants</h1>
+    <div class="mb-3">
+        <a href="/" class="btn btn-outline-secondary btn-sm">← Home</a>
+        <a href="/restaurants/new" class="btn btn-primary btn-sm">+ New Restaurant</a>
+    </div>
+
+    <!-- Search -->
+    <form th:action="@{/restaurants}" method="get" class="row g-2 mb-4">
+        <div class="col-md-4">
+            <input type="text" name="name" class="form-control" placeholder="Search by name"
+                   th:value="${search.name}">
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="cuisine" class="form-control" placeholder="Search by cuisine"
+                   th:value="${search.cuisine}">
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-info w-100">Search</button>
+        </div>
+        <div class="col-md-2">
+            <a href="/restaurants" class="btn btn-outline-secondary w-100">Reset</a>
+        </div>
+    </form>
+
+    <!-- Table -->
+    <div th:if="${#lists.isEmpty(restaurants)}" class="alert alert-info">No restaurants found.</div>
+    <table th:unless="${#lists.isEmpty(restaurants)}" class="table table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Cuisine</th>
+            <th>Address</th>
+            <th>Items</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="r : ${restaurants}">
+            <td th:text="${r.id}">1</td>
+            <td><a th:href="@{/restaurants/{id}(id=${r.id})}" th:text="${r.name}">Name</a></td>
+            <td th:text="${r.cuisine}">Cuisine</td>
+            <td th:text="${r.address}">Address</td>
+            <td th:text="${#lists.size(r.menuItems)}">0</td>
+            <td>
+                <a th:href="@{/restaurants/{id}/edit(id=${r.id})}" class="btn btn-sm btn-warning">Edit</a>
+                <form th:action="@{/restaurants/{id}/delete(id=${r.id})}" method="post" style="display:inline"
+                      onsubmit="return confirm('Delete this restaurant?');">
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
