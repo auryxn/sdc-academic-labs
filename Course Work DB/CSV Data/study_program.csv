@@ -1,0 +1,15 @@
+ProgramName,DepartmentName,DegreeLevel,DurationYears,TuitionFee
+BSc in Computer Science,Software Engineering,Bachelor,4,4500.00
+BSc in Data Science,Data Science,Bachelor,4,4800.00
+MSc in Cybersecurity,Cybersecurity,Master,2,5200.00
+BSc in Finance,Finance and Accounting,Bachelor,4,4000.00
+MBA in Marketing,Marketing,Master,2,5500.00
+BEng in Mechanical Engineering,Mechanical Engineering,Bachelor,4,4700.00
+MSc in Electrical Engineering,Electrical Engineering,Master,2,5100.00
+MD in General Medicine,General Medicine,Master,6,6500.00
+BSc in Pharmacy,Pharmacy,Bachelor,5,5600.00
+LLM in International Law,International Law,Master,2,5400.00
+BA in Modern Languages,Modern Languages,Bachelor,3,3500.00
+PhD in Physics,Physics,PhD,4,3000.00
+PhD in Chemistry,Chemistry,PhD,4,3000.00
+BSc in Cybersecurity,Cybersecurity,Bachelor,4,5000.00
