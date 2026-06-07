@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="JSONPlaceholder API Tests" parallel="false">
+    <test name="Smoke Tests">
+        <classes>
+            <class name="com.stv.api.tests.SmokeTests"/>
+        </classes>
+    </test>
+    <test name="Posts Tests">
+        <classes>
+            <class name="com.stv.api.tests.PostTests"/>
+        </classes>
+    </test>
+    <test name="Comments Tests">
+        <classes>
+            <class name="com.stv.api.tests.CommentTests"/>
+        </classes>
+    </test>
+</suite>
