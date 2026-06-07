@@ -1,0 +1,17 @@
+CourseCode,CourseName,Credits,DepartmentName,TeacherEmail,MaxStudents,Semester,AcademicYear
+CS101,Introduction to Programming,5,Software Engineering,alan.johnson@uni.edu,30,Fall,2025
+CS201,Data Structures and Algorithms,5,Software Engineering,alan.johnson@uni.edu,25,Fall,2025
+DS101,Introduction to Data Science,4,Data Science,grace.williams@uni.edu,30,Spring,2025
+CYB501,Network Security,4,Cybersecurity,kevin.davis@uni.edu,20,Fall,2025
+FIN101,Financial Accounting,4,Finance and Accounting,paul.miller@uni.edu,40,Fall,2025
+MKT301,Digital Marketing,3,Marketing,philip.moore@uni.edu,35,Spring,2025
+MECH101,Engineering Mechanics,5,Mechanical Engineering,nikola.anderson@uni.edu,25,Fall,2025
+EE201,Circuit Analysis,4,Electrical Engineering,michael.martin@uni.edu,30,Spring,2025
+MED501,Human Anatomy,6,General Medicine,william.jackson@uni.edu,50,Fall,2025
+PHR301,Pharmacology Basics,4,Pharmacy,alexander.thompson@uni.edu,25,Fall,2025
+LAW401,International Human Rights,3,International Law,hans.garcia@uni.edu,30,Spring,2025
+LAN101,English Literature,3,Modern Languages,noah.martinez@uni.edu,40,Fall,2025
+PHY301,Quantum Mechanics,5,Physics,albert.robinson@uni.edu,15,Fall,2025
+CHM201,Organic Chemistry,5,Chemistry,marie.lee@uni.edu,20,Spring,2025
+CS301,Database Systems,5,Software Engineering,olivia.walker@uni.edu,30,Fall,2025
+DS201,Machine Learning Fundamentals,5,Data Science,henry.hall@uni.edu,25,Spring,2025
