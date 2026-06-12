@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 public class RestaurantService {
 
     private static final Logger log = LoggerFactory.getLogger(RestaurantService.class);
-
     private final RestaurantRepository restaurantRepo;
     private final MenuItemRepository menuItemRepo;
 
@@ -30,17 +29,15 @@ public class RestaurantService {
 
     public List<RestaurantViewDto> findAll() {
         log.debug("Fetching all restaurants");
-        List<RestaurantViewDto> result = restaurantRepo.findAll().stream()
+        return restaurantRepo.findAll().stream()
                 .map(this::toViewDto)
                 .collect(Collectors.toList());
-        log.debug("Found {} restaurants", result.size());
-        return result;
     }
 
     public RestaurantViewDto findById(Long id) {
         log.debug("Finding restaurant by id: {}", id);
         Restaurant r = restaurantRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Restaurant", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found: " + id, id));
         return toViewDto(r);
     }
 
@@ -65,40 +62,35 @@ public class RestaurantService {
         } else {
             results = restaurantRepo.findAll();
         }
-        log.debug("Search returned {} results", results.size());
         return results.stream().map(this::toViewDto).collect(Collectors.toList());
     }
 
     @Transactional
     public RestaurantViewDto create(RestaurantCreateDto dto) {
-        log.info("Creating restaurant: name='{}', cuisine='{}'", dto.getName(), dto.getCuisine());
+        log.info("Creating restaurant: {}", dto.getName());
         Restaurant r = new Restaurant(dto.getName(), dto.getAddress(), dto.getCuisine());
         r = restaurantRepo.save(r);
-        log.info("Restaurant created with id: {}", r.getId());
         return toViewDto(r);
     }
 
     @Transactional
     public RestaurantViewDto update(Long id, RestaurantCreateDto dto) {
-        log.info("Updating restaurant id={}: name='{}', cuisine='{}'", id, dto.getName(), dto.getCuisine());
+        log.info("Updating restaurant {}", id);
         Restaurant r = restaurantRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Restaurant", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found: " + id, id));
         r.setName(dto.getName());
         r.setAddress(dto.getAddress());
         r.setCuisine(dto.getCuisine());
-        r = restaurantRepo.save(r);
-        log.info("Restaurant {} updated", id);
-        return toViewDto(r);
+        return toViewDto(restaurantRepo.save(r));
     }
 
     @Transactional
     public void delete(Long id) {
-        log.info("Deleting restaurant id={}", id);
+        log.info("Deleting restaurant {}", id);
         if (!restaurantRepo.existsById(id)) {
-            throw new ResourceNotFoundException("Restaurant", id);
+            throw new ResourceNotFoundException("Restaurant not found: " + id, id);
         }
         restaurantRepo.deleteById(id);
-        log.info("Restaurant {} deleted", id);
     }
 
     public RestaurantViewDto toViewDto(Restaurant r) {

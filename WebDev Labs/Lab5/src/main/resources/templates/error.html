@@ -2,14 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${errorTitle}">Ошибка</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title>Error</title>
 </head>
 <body>
-<div class="container">
-    <h1 th:text="${errorTitle}">Ошибка</h1>
-    <p th:text="${errorMessage}">Что-то пошло не так.</p>
-    <a href="/">← На главную</a>
-</div>
+    <h1>Error</h1>
+    <p th:text="${errorMessage}">Something went wrong.</p>
+    <a href="/">Go back to home</a>
 </body>
 </html>

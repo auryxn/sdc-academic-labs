@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 public class MenuItemService {
 
     private static final Logger log = LoggerFactory.getLogger(MenuItemService.class);
-
     private final MenuItemRepository menuItemRepo;
     private final RestaurantRepository restaurantRepo;
 
@@ -30,22 +29,19 @@ public class MenuItemService {
 
     public List<MenuItemViewDto> findAll() {
         log.debug("Fetching all menu items");
-        List<MenuItemViewDto> result = menuItemRepo.findAll().stream()
+        return menuItemRepo.findAll().stream()
                 .map(this::toViewDto)
                 .collect(Collectors.toList());
-        log.debug("Found {} menu items", result.size());
-        return result;
     }
 
     public MenuItemViewDto findById(Long id) {
         log.debug("Finding menu item by id: {}", id);
         MenuItem mi = menuItemRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("MenuItem", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Menu item not found: " + id, id));
         return toViewDto(mi);
     }
 
     public List<MenuItemViewDto> findByRestaurant(Long restaurantId) {
-        log.debug("Finding menu items for restaurant id: {}", restaurantId);
         return menuItemRepo.findByRestaurantId(restaurantId).stream()
                 .map(this::toViewDto)
                 .collect(Collectors.toList());
@@ -58,7 +54,7 @@ public class MenuItemService {
         boolean hasName = name != null && !name.isBlank();
         boolean hasCategory = category != null && !category.isBlank();
 
-        log.debug("Searching menu items: name='{}', category='{}', restaurantId={}", name, category, restId);
+        log.debug("Searching menu items");
 
         List<MenuItem> results;
         if (hasName && hasCategory && restId != null) {
@@ -76,49 +72,43 @@ public class MenuItemService {
         } else {
             results = menuItemRepo.findAll();
         }
-        log.debug("Search returned {} results", results.size());
         return results.stream().map(this::toViewDto).collect(Collectors.toList());
     }
 
     @Transactional
     public MenuItemViewDto create(MenuItemCreateDto dto) {
-        log.info("Creating menu item: name='{}', price={}, restaurantId={}", dto.getName(), dto.getPrice(), dto.getRestaurantId());
+        log.info("Creating menu item: {}", dto.getName());
         Restaurant r = restaurantRepo.findById(dto.getRestaurantId())
-                .orElseThrow(() -> new ResourceNotFoundException("Restaurant", dto.getRestaurantId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found: " + dto.getRestaurantId(), dto.getRestaurantId()));
         MenuItem mi = new MenuItem(dto.getName(), dto.getDescription(), dto.getPrice(), dto.getCategory());
         mi.setRestaurant(r);
-        mi = menuItemRepo.save(mi);
-        log.info("Menu item created with id: {}", mi.getId());
-        return toViewDto(mi);
+        return toViewDto(menuItemRepo.save(mi));
     }
 
     @Transactional
     public MenuItemViewDto update(Long id, MenuItemCreateDto dto) {
-        log.info("Updating menu item id={}: name='{}', price={}", id, dto.getName(), dto.getPrice());
+        log.info("Updating menu item {}", id);
         MenuItem mi = menuItemRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("MenuItem", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Menu item not found: " + id, id));
         mi.setName(dto.getName());
         mi.setDescription(dto.getDescription());
         mi.setPrice(dto.getPrice());
         mi.setCategory(dto.getCategory());
         if (dto.getRestaurantId() != null && !dto.getRestaurantId().equals(mi.getRestaurantId())) {
             Restaurant r = restaurantRepo.findById(dto.getRestaurantId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Restaurant", dto.getRestaurantId()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found: " + dto.getRestaurantId(), dto.getRestaurantId()));
             mi.setRestaurant(r);
         }
-        mi = menuItemRepo.save(mi);
-        log.info("Menu item {} updated", id);
-        return toViewDto(mi);
+        return toViewDto(menuItemRepo.save(mi));
     }
 
     @Transactional
     public void delete(Long id) {
-        log.info("Deleting menu item id={}", id);
+        log.info("Deleting menu item {}", id);
         if (!menuItemRepo.existsById(id)) {
-            throw new ResourceNotFoundException("MenuItem", id);
+            throw new ResourceNotFoundException("Menu item not found: " + id, id);
         }
         menuItemRepo.deleteById(id);
-        log.info("Menu item {} deleted", id);
     }
 
     public MenuItemViewDto toViewDto(MenuItem mi) {

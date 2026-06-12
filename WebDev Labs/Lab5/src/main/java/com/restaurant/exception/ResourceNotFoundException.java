@@ -1,17 +1,11 @@
 package com.restaurant.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
-    private final String resourceName;
-    private final Long resourceId;
+    private Long resourceId;
 
-    public ResourceNotFoundException(String resourceName, Long resourceId) {
-        super(resourceName + " not found: " + resourceId);
-        this.resourceName = resourceName;
+    public ResourceNotFoundException(String message, Long resourceId) {
+        super(message);
         this.resourceId = resourceId;
-    }
-
-    public String getResourceName() {
-        return resourceName;
     }
 
     public Long getResourceId() {
