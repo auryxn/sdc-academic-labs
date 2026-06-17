@@ -7,7 +7,6 @@ import io.cucumber.java.en.Then;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
@@ -17,20 +16,17 @@ import java.util.List;
 public class CustomerLookupSteps extends BasicTest {
 
     private static final Logger logger = LogManager.getLogger(CustomerLookupSteps.class);
-    private WebDriver driver = getDriver();
-    private Actions actions = new Actions(driver);
+    private Actions actions;
+
+    public CustomerLookupSteps() {
+        this.actions = new Actions(getDriver());
+    }
 
     // === 0:01 — Main page → click Forgot Login Info ===
 
-    @Given("I am on the ParaBank home page")
-    public void iAmOnTheParaBankHomePage() {
-        driver.get("https://parabank.parasoft.com/parabank/index.htm");
-        logger.info("Navigated to ParaBank home page");
-    }
-
     @When("I click the {string} link")
     public void iClickLink(String linkText) {
-        driver.findElement(By.linkText(linkText)).click();
+        getDriver().findElement(By.linkText(linkText)).click();
         logger.info("Clicked link: {}", linkText);
     }
 
@@ -38,7 +34,7 @@ public class CustomerLookupSteps extends BasicTest {
 
     @Then("the Customer Lookup panel should be visible")
     public void customerLookupPanelShouldBeVisible() {
-        WebElement panel = driver.findElement(By.className("customerLookupPanel"));
+        WebElement panel = getDriver().findElement(By.className("customerLookupPanel"));
         Assert.assertTrue(panel.isDisplayed(), "Customer Lookup panel should be displayed");
         logger.info("Customer Lookup panel is visible");
     }
@@ -47,7 +43,7 @@ public class CustomerLookupSteps extends BasicTest {
 
     @Then("all fields should be empty by default")
     public void allFieldsShouldBeEmpty() {
-        List<WebElement> inputs = driver.findElements(By.cssSelector(".customerLookupPanel input[type='text']"));
+        List<WebElement> inputs = getDriver().findElements(By.cssSelector(".customerLookupPanel input[type='text']"));
         for (WebElement input : inputs) {
             String value = input.getAttribute("value");
             Assert.assertTrue(value == null || value.isEmpty(),
@@ -60,7 +56,7 @@ public class CustomerLookupSteps extends BasicTest {
 
     @Then("the {string} button should be available")
     public void buttonShouldBeAvailable(String buttonValue) {
-        WebElement button = driver.findElement(By.cssSelector("input[value='" + buttonValue + "']"));
+        WebElement button = getDriver().findElement(By.cssSelector("input[value='" + buttonValue + "']"));
         Assert.assertTrue(button.isDisplayed(), "Button should be displayed");
         Assert.assertTrue(button.isEnabled(), "Button should be enabled");
         logger.info("Button '{}' is available", buttonValue);
@@ -70,7 +66,7 @@ public class CustomerLookupSteps extends BasicTest {
 
     @When("I click the {string} button with all fields empty")
     public void iClickButtonWithEmptyFields(String buttonValue) {
-        driver.findElement(By.cssSelector("input[value='" + buttonValue + "']")).click();
+        getDriver().findElement(By.cssSelector("input[value='" + buttonValue + "']")).click();
         logger.info("Clicked '{}' with empty fields", buttonValue);
     }
 
@@ -78,7 +74,7 @@ public class CustomerLookupSteps extends BasicTest {
 
     @Then("appropriate error messages should appear")
     public void errorMessagesShouldAppear() {
-        List<WebElement> errors = driver.findElements(By.className("error"));
+        List<WebElement> errors = getDriver().findElements(By.className("error"));
         Assert.assertFalse(errors.isEmpty(), "Error messages should appear");
         logger.info("Error messages appeared: {} found", errors.size());
     }
@@ -87,7 +83,7 @@ public class CustomerLookupSteps extends BasicTest {
 
     @Then("the amount of error messages should match the number of required fields")
     public void errorMessageCountShouldMatch() {
-        List<WebElement> errors = driver.findElements(By.className("error"));
+        List<WebElement> errors = getDriver().findElements(By.className("error"));
         // All text fields: firstName, lastName, address, city, state, zipCode, ssn
         int expectedErrors = 7;
         Assert.assertEquals(errors.size(), expectedErrors,
@@ -99,15 +95,15 @@ public class CustomerLookupSteps extends BasicTest {
 
     @When("I fill all fields except SSN and click {string}")
     public void iFillAllFieldsExceptSsn(String buttonValue) {
-        driver.findElement(By.name("firstName")).sendKeys("Test");
-        driver.findElement(By.name("lastName")).sendKeys("User");
-        driver.findElement(By.name("address.street")).sendKeys("123 Main St");
-        driver.findElement(By.name("address.city")).sendKeys("New York");
-        driver.findElement(By.name("address.state")).sendKeys("NY");
-        driver.findElement(By.name("address.zipCode")).sendKeys("10001");
+        getDriver().findElement(By.name("firstName")).sendKeys("Test");
+        getDriver().findElement(By.name("lastName")).sendKeys("User");
+        getDriver().findElement(By.name("address.street")).sendKeys("123 Main St");
+        getDriver().findElement(By.name("address.city")).sendKeys("New York");
+        getDriver().findElement(By.name("address.state")).sendKeys("NY");
+        getDriver().findElement(By.name("address.zipCode")).sendKeys("10001");
         // SSN is intentionally left empty
         logger.info("Filled all fields except SSN");
-        driver.findElement(By.cssSelector("input[value='" + buttonValue + "']")).click();
+        getDriver().findElement(By.cssSelector("input[value='" + buttonValue + "']")).click();
         logger.info("Clicked '{}' after filling fields", buttonValue);
     }
 
@@ -115,7 +111,7 @@ public class CustomerLookupSteps extends BasicTest {
 
     @Then("only one message {string} should be visible")
     public void onlyOneMessageShouldBeVisible(String expectedMessage) {
-        List<WebElement> errors = driver.findElements(By.className("error"));
+        List<WebElement> errors = getDriver().findElements(By.className("error"));
         Assert.assertEquals(errors.size(), 1, "Expected exactly 1 error message");
         String actualText = errors.get(0).getText().trim();
         Assert.assertTrue(actualText.contains(expectedMessage),
@@ -127,7 +123,7 @@ public class CustomerLookupSteps extends BasicTest {
 
     @Then("the previous error messages should have disappeared")
     public void previousErrorsShouldHaveDisappeared() {
-        List<WebElement> errors = driver.findElements(By.className("error"));
+        List<WebElement> errors = getDriver().findElements(By.className("error"));
         for (WebElement err : errors) {
             String text = err.getText().toLowerCase();
             Assert.assertFalse(text.contains("first name") || text.contains("last name") ||
@@ -144,9 +140,9 @@ public class CustomerLookupSteps extends BasicTest {
 
     @When("I enter any SSN number and click {string}")
     public void iEnterSsnAndClick(String buttonValue) {
-        driver.findElement(By.name("ssn")).sendKeys("123-45-6789");
+        getDriver().findElement(By.name("ssn")).sendKeys("123-45-6789");
         logger.info("Entered SSN");
-        driver.findElement(By.cssSelector("input[value='" + buttonValue + "']")).click();
+        getDriver().findElement(By.cssSelector("input[value='" + buttonValue + "']")).click();
         logger.info("Clicked '{}' after entering SSN", buttonValue);
     }
 
@@ -154,7 +150,7 @@ public class CustomerLookupSteps extends BasicTest {
 
     @Then("the error {string} should be displayed")
     public void errorShouldBeDisplayed(String expectedError) {
-        WebElement errorPanel = driver.findElement(By.className("error"));
+        WebElement errorPanel = getDriver().findElement(By.className("error"));
         Assert.assertTrue(errorPanel.isDisplayed(), "Error panel should be displayed");
         String actualText = errorPanel.getText().trim();
         Assert.assertTrue(actualText.contains(expectedError),
@@ -166,13 +162,13 @@ public class CustomerLookupSteps extends BasicTest {
 
     @When("I click on the ParaBank logo")
     public void iClickOnLogo() {
-        driver.findElement(By.className("logo")).click();
+        getDriver().findElement(By.className("logo")).click();
         logger.info("Clicked on ParaBank logo");
     }
 
     @Then("the home page should be visible")
     public void homePageShouldBeVisible() {
-        String currentUrl = driver.getCurrentUrl();
+        String currentUrl = getDriver().getCurrentUrl();
         Assert.assertTrue(currentUrl.contains("index.htm"),
                 "Should be on home page, URL: " + currentUrl);
         logger.info("Home page is visible: {}", currentUrl);
@@ -182,14 +178,14 @@ public class CustomerLookupSteps extends BasicTest {
 
     @When("I mouse over the ParaBank logo")
     public void iMouseOverLogo() {
-        WebElement logo = driver.findElement(By.className("logo"));
+        WebElement logo = getDriver().findElement(By.className("logo"));
         actions.moveToElement(logo).perform();
         logger.info("Mouse over ParaBank logo");
     }
 
     @Then("a tooltip with text {string} should be visible")
     public void tooltipShouldBeVisible(String expectedTooltip) {
-        WebElement logo = driver.findElement(By.className("logo"));
+        WebElement logo = getDriver().findElement(By.className("logo"));
         String title = logo.getAttribute("title");
         // Also check common tooltip attributes
         String alt = logo.getAttribute("alt");

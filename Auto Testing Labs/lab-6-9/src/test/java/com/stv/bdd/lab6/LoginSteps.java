@@ -6,20 +6,11 @@ import com.stv.factory.factorypages.FactoryRegisterPage;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 public class LoginSteps extends BasicTest {
 
-    private WebDriver driver = getDriver();
     private FactoryMainPage mainPage = new FactoryMainPage();
-
-    @Given("I am on the ParaBank home page")
-    public void iAmOnTheParaBankHomePage() {
-        driver.get("https://parabank.parasoft.com/parabank/index.htm");
-    }
 
     @When("I enter username {string} and password {string}")
     public void iEnterUsernameAndPassword(String username, String password) {
