@@ -18,7 +18,7 @@ public class ZipCodeBugSteps extends BasicTest {
 
     @When("I enter non-numeric characters {string} in the Zip Code field")
     public void iEnterNonNumericCharactersInTheZipCodeField(String zipInput) {
-        WebElement zipField = getDriver().findElement(By.id("customer.zipCode"));
+        WebElement zipField = getDriver().findElement(By.id("customer.address.zipCode"));
         zipField.clear();
         zipField.sendKeys(zipInput);
     }

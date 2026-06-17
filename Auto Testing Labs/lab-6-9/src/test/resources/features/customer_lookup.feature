@@ -1,11 +1,11 @@
-Feature: Customer Lookup — Forgot Login Info Validation
+Feature: Customer Lookup — Forgot login info? Validation
   As a ParaBank user
-  I want to test the "Forgot Login Info" form validation
+  I want to test the "Forgot login info?" form validation
   So that I can verify all error messages appear at the right time
 
   Scenario: Customer Lookup form validation flow
     Given I am on the ParaBank home page
-    When I click the "Forgot Login Info" link
+    When I click the "Forgot login info?" link
     Then the Customer Lookup panel should be visible
     And all fields should be empty by default
     And the "Find My Login Info" button should be available
