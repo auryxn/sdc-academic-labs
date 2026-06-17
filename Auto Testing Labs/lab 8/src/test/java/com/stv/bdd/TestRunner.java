@@ -26,6 +26,7 @@ public class TestRunner extends AbstractTestNGCucumberTests {
     public void beforeSuite() {
         logger.info("========================================");
         logger.info("  Lab 8 - BDD Individual Task Started   ");
+        logger.info("  Scenario: Customer Lookup Form Flow   ");
         logger.info("========================================");
     }
 
