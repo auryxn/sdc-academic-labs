@@ -11,7 +11,6 @@ import org.testng.Assert;
 public class LoginSteps extends BasicTest {
 
     private FactoryMainPage mainPage = new FactoryMainPage();
-    private java.util.function.Supplier<org.openqa.selenium.WebDriver> driverSupplier = this::getDriver;
 
     @When("I enter username {string} and password {string}")
     public void iEnterUsernameAndPassword(String username, String password) {
