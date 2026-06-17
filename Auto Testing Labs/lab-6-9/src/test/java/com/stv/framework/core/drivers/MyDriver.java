@@ -21,10 +21,11 @@ public class MyDriver {
     }
 
     private static void setChromeDriver() {
-//        String exePath = "C:\\Chromedriver\\chromedriver.exe";
-//        System.setProperty("webdriver.chrome.driver", exePath);
-//        ChromeOptions options = new ChromeOptions();
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        driver = new ChromeDriver(options);
     }
 
     /**

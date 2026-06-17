@@ -87,6 +87,18 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.2</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                    <excludes>
+                        <exclude>**/designtests/**</exclude>
+                        <exclude>**/factorytests/**</exclude>
+                        <exclude>**/MainTest.java</exclude>
+                        <exclude>**/FactoryMainTest.java</exclude>
+                        <exclude>**/BasicTest.java</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

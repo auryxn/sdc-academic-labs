@@ -136,6 +136,22 @@ public class CustomerLookupSteps extends BasicTest {
 
     // === 1:44 — SSN is required still visible ===
 
+    @When("I click the {string} button again")
+    public void iClickButtonAgain(String buttonValue) {
+        getDriver().findElement(By.cssSelector("input[value='" + buttonValue + "']")).click();
+        logger.info("Clicked '{}' button again", buttonValue);
+    }
+
+    @Then("the SSN is required message should still be visible")
+    public void ssnRequiredMessageShouldStillBeVisible() {
+        List<WebElement> errors = getDriver().findElements(By.className("error"));
+        Assert.assertEquals(errors.size(), 1, "Expected exactly 1 error message");
+        String actualText = errors.get(0).getText().trim();
+        Assert.assertTrue(actualText.contains("SSN is required"),
+                "Error message should contain 'SSN is required', but was: " + actualText);
+        logger.info("SSN is required message still visible: '{}'", actualText);
+    }
+
     // === 1:53 — Enter SSN ===
 
     @When("I enter any SSN number and click {string}")

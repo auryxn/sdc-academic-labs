@@ -5,23 +5,20 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 public class ZipCodeBugSteps extends BasicTest {
 
-    private WebDriver driver = getDriver();
-
     @Given("I am on the ParaBank registration page")
     public void iAmOnTheParaBankRegistrationPage() {
-        driver.get("https://parabank.parasoft.com/parabank/register.htm");
+        getDriver().get("https://parabank.parasoft.com/parabank/register.htm");
     }
 
     @When("I enter non-numeric characters {string} in the Zip Code field")
     public void iEnterNonNumericCharactersInTheZipCodeField(String zipInput) {
-        WebElement zipField = driver.findElement(By.id("customer.zipCode"));
+        WebElement zipField = getDriver().findElement(By.id("customer.zipCode"));
         zipField.clear();
         zipField.sendKeys(zipInput);
     }
@@ -29,23 +26,23 @@ public class ZipCodeBugSteps extends BasicTest {
     @When("I submit the registration form with valid data")
     public void iSubmitTheRegistrationFormWithValidData() {
         // Fill all required fields with valid data
-        driver.findElement(By.id("customer.firstName")).sendKeys("Test");
-        driver.findElement(By.id("customer.lastName")).sendKeys("User");
-        driver.findElement(By.id("customer.address.street")).sendKeys("123 Main St");
-        driver.findElement(By.id("customer.address.city")).sendKeys("New York");
-        driver.findElement(By.id("customer.address.state")).sendKeys("NY");
+        getDriver().findElement(By.id("customer.firstName")).sendKeys("Test");
+        getDriver().findElement(By.id("customer.lastName")).sendKeys("User");
+        getDriver().findElement(By.id("customer.address.street")).sendKeys("123 Main St");
+        getDriver().findElement(By.id("customer.address.city")).sendKeys("New York");
+        getDriver().findElement(By.id("customer.address.state")).sendKeys("NY");
         // Zip Code is already filled by previous step
-        driver.findElement(By.id("customer.phoneNumber")).sendKeys("+1234567890");
-        driver.findElement(By.id("customer.ssn")).sendKeys("123-45-6789");
+        getDriver().findElement(By.id("customer.phoneNumber")).sendKeys("+1234567890");
+        getDriver().findElement(By.id("customer.ssn")).sendKeys("123-45-6789");
 
         // Unique username to avoid duplicate registration errors
         String uniqueUsername = "testuser_" + System.currentTimeMillis();
-        driver.findElement(By.id("customer.username")).sendKeys(uniqueUsername);
-        driver.findElement(By.id("customer.password")).sendKeys("TestPass123!");
-        driver.findElement(By.id("repeatedPassword")).sendKeys("TestPass123!");
+        getDriver().findElement(By.id("customer.username")).sendKeys(uniqueUsername);
+        getDriver().findElement(By.id("customer.password")).sendKeys("TestPass123!");
+        getDriver().findElement(By.id("repeatedPassword")).sendKeys("TestPass123!");
 
         // Submit
-        WebElement registerButton = driver.findElement(By.cssSelector("input[value='Register']"));
+        WebElement registerButton = getDriver().findElement(By.cssSelector("input[value='Register']"));
         registerButton.click();
     }
 
@@ -55,7 +52,7 @@ public class ZipCodeBugSteps extends BasicTest {
         // This test will FAIL — proving the bug exists
         boolean hasError = false;
         try {
-            WebElement errorPanel = driver.findElement(By.className("error"));
+            WebElement errorPanel = getDriver().findElement(By.className("error"));
             if (errorPanel.isDisplayed()) {
                 String errorText = errorPanel.getText();
                 if (errorText.toLowerCase().contains("zip") || errorText.toLowerCase().contains("postal")) {
