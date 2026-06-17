@@ -1,0 +1,16 @@
+FirstName,LastName,Email,Phone,DateOfBirth,EnrollmentDate,ProgramName,Status
+John,Doe,john.doe@uni.edu,+37062000001,2001-03-15,2023-09-01,BSc in Computer Science,Active
+Jane,Smith,jane.smith@uni.edu,+37062000002,2002-07-22,2024-09-01,BSc in Computer Science,Active
+Michael,Brown,michael.brown@uni.edu,+37062000003,2000-11-08,2019-09-01,BSc in Data Science,Graduated
+Anna,Lee,anna.lee@uni.edu,+37062000004,2003-01-30,2024-09-01,BSc in Finance,Active
+David,Wilson,david.wilson@uni.edu,+37062000005,2001-05-12,2022-09-01,MSc in Cybersecurity,Active
+Sarah,Garcia,sarah.garcia@uni.edu,+37062000006,2002-09-18,2024-09-01,BEng in Mechanical Engineering,Active
+Robert,Taylor,robert.taylor@uni.edu,+37062000007,1999-12-01,2018-09-01,MD in General Medicine,Graduated
+Emily,Anderson,emily.anderson@uni.edu,+37062000008,2003-04-05,2024-09-01,BA in Modern Languages,Active
+Daniel,Thomas,daniel.thomas@uni.edu,+37062000009,2001-08-14,2023-09-01,BSc in Computer Science,Active
+Lisa,Jackson,lisa.jackson@uni.edu,+37062000010,2002-02-28,2024-09-01,BSc in Pharmacy,Active
+James,White,james.white@uni.edu,+37062000011,2000-06-20,2020-09-01,BSc in Data Science,Active
+Maria,Martinez,maria.martinez@uni.edu,+37062000012,2003-10-10,2024-09-01,BSc in Finance,Active
+William,Robinson,william.robinson@uni.edu,+37062000013,1998-04-17,2017-09-01,PhD in Physics,Graduated
+Sophia,Clark,sophia.clark@uni.edu,+37062000014,2001-11-25,2022-09-01,MBA in Marketing,Active
+Oliver,Hall,oliver.hall@uni.edu,+37062000015,2002-07-07,2023-09-01,BSc in Cybersecurity,Active

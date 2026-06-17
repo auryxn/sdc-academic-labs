@@ -1,0 +1,16 @@
+FirstName,LastName,Email,Phone,DepartmentName,HireDate,Degree,Salary
+Alan,Johnson,alan.johnson@uni.edu,+37063000001,Software Engineering,2015-09-01,PhD,65000.00
+Grace,Williams,grace.williams@uni.edu,+37063000002,Data Science,2018-01-15,PhD,72000.00
+Kevin,Davis,kevin.davis@uni.edu,+37063000003,Cybersecurity,2020-08-01,MSc,58000.00
+Paul,Miller,paul.miller@uni.edu,+37063000004,Finance and Accounting,2012-05-10,PhD,68000.00
+Philip,Moore,philip.moore@uni.edu,+37063000005,Marketing,2019-09-01,MSc,55000.00
+Nikola,Anderson,nikola.anderson@uni.edu,+37063000006,Mechanical Engineering,2010-03-01,PhD,71000.00
+Michael,Martin,michael.martin@uni.edu,+37063000007,Electrical Engineering,2016-11-01,PhD,69000.00
+William,Jackson,william.jackson@uni.edu,+37063000008,General Medicine,2014-02-15,MD,85000.00
+Alexander,Thompson,alexander.thompson@uni.edu,+37063000009,Pharmacy,2021-06-01,PhD,62000.00
+Hans,Garcia,hans.garcia@uni.edu,+37063000010,International Law,2017-09-01,JD,66000.00
+Noah,Martinez,noah.martinez@uni.edu,+37063000011,Modern Languages,2013-08-20,PhD,54000.00
+Albert,Robinson,albert.robinson@uni.edu,+37063000012,Physics,2009-04-01,PhD,75000.00
+Marie,Lee,marie.lee@uni.edu,+37063000013,Chemistry,2016-09-01,PhD,73000.00
+Olivia,Walker,olivia.walker@uni.edu,+37063000014,Software Engineering,2022-01-10,MSc,52000.00
+Henry,Hall,henry.hall@uni.edu,+37063000015,Data Science,2021-09-01,PhD,70000.00

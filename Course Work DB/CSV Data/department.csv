@@ -1,0 +1,14 @@
+DepartmentName,FacultyName,HeadName,Budget
+Software Engineering,Faculty of Computer Science,Dr. Alan Turing Jr.,850000.00
+Data Science,Faculty of Computer Science,Dr. Grace Hopper,720000.00
+Cybersecurity,Faculty of Computer Science,Prof. Kevin Mitnick,650000.00
+Finance and Accounting,Faculty of Business and Economics,Dr. Paul Samuelson,580000.00
+Marketing,Faculty of Business and Economics,Prof. Philip Kotler,420000.00
+Mechanical Engineering,Faculty of Engineering,Dr. Nikola Tesla,780000.00
+Electrical Engineering,Faculty of Engineering,Dr. Michael Faraday,690000.00
+General Medicine,Faculty of Medicine,Prof. William Osler,920000.00
+Pharmacy,Faculty of Medicine,Dr. Alexander Fleming,510000.00
+International Law,Faculty of Law,Prof. Hans Kelsen,460000.00
+Modern Languages,Faculty of Arts and Humanities,Dr. Noam Chomsky,380000.00
+Physics,Faculty of Natural Sciences,Dr. Albert Einstein,740000.00
+Chemistry,Faculty of Natural Sciences,Dr. Marie Curie,670000.00
