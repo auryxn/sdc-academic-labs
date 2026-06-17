@@ -13,7 +13,8 @@ public class RegistrationSteps extends BasicTest {
 
     @When("I click the Register link")
     public void iClickTheRegisterLink() {
-        mainPage.clickRegisterLink();
+        getDriver().manage().timeouts().implicitlyWait(java.time.Duration.ofSeconds(10));
+        getDriver().findElement(org.openqa.selenium.By.linkText("Register")).click();
     }
 
     @Then("I should see the registration page with title {string}")

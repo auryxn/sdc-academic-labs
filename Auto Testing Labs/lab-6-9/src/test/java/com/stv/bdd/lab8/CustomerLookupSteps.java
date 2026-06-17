@@ -26,6 +26,7 @@ public class CustomerLookupSteps extends BasicTest {
 
     @When("I click the {string} link")
     public void iClickLink(String linkText) {
+        getDriver().manage().timeouts().implicitlyWait(java.time.Duration.ofSeconds(10));
         getDriver().findElement(By.linkText(linkText)).click();
         logger.info("Clicked link: {}", linkText);
     }
@@ -34,7 +35,7 @@ public class CustomerLookupSteps extends BasicTest {
 
     @Then("the Customer Lookup panel should be visible")
     public void customerLookupPanelShouldBeVisible() {
-        WebElement panel = getDriver().findElement(By.className("customerLookupPanel"));
+        WebElement panel = getDriver().findElement(By.id("lookupForm"));
         Assert.assertTrue(panel.isDisplayed(), "Customer Lookup panel should be displayed");
         logger.info("Customer Lookup panel is visible");
     }
@@ -43,7 +44,7 @@ public class CustomerLookupSteps extends BasicTest {
 
     @Then("all fields should be empty by default")
     public void allFieldsShouldBeEmpty() {
-        List<WebElement> inputs = getDriver().findElements(By.cssSelector(".customerLookupPanel input[type='text']"));
+        List<WebElement> inputs = getDriver().findElements(By.cssSelector("#lookupForm input[type='text']"));
         for (WebElement input : inputs) {
             String value = input.getAttribute("value");
             Assert.assertTrue(value == null || value.isEmpty(),
