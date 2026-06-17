@@ -47,11 +47,10 @@ public class CommentTests extends ApiBaseTest {
                 .then()
                 .spec(responseSpec)
                 .statusCode(200)
-                .body("size()", greaterThan(0))
-                .body("everyItem.postId", equalTo(postId))
                 .extract()
                 .as(new TypeRef<List<Comment>>() {});
 
+        Assert.assertFalse(comments.isEmpty(), "Comments should exist for postId=" + postId);
         for (Comment c : comments) {
             Assert.assertEquals(c.getPostId(), postId,
                     "All comments should belong to postId=" + postId);

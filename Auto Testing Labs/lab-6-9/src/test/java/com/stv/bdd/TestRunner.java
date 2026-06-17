@@ -5,7 +5,7 @@ import io.cucumber.testng.CucumberOptions;
 
 @CucumberOptions(
         features = "src/test/resources/features",
-        glue = "com.stv.bdd.stepdefinitions",
+        glue = "com.stv.bdd",
         plugin = {"pretty", "html:target/cucumber-reports.html"},
         monochrome = true
 )
