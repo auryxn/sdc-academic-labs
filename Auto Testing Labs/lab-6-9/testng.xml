@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Auto Testing Labs 6-9" verbose="1">
-    <test name="Lab 6 - BDD">
-        <classes>
-            <class name="com.stv.bdd.TestRunner"/>
-        </classes>
-    </test>
-    <test name="Lab 9 - API">
+    <test name="Lab 9 - API Tests">
         <packages>
             <package name="com.stv.api.tests"/>
         </packages>
+    </test>
+    <test name="Labs 6-8 - BDD Tests">
+        <classes>
+            <class name="com.stv.bdd.TestRunner"/>
+        </classes>
     </test>
 </suite>
