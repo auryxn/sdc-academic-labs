@@ -14,7 +14,8 @@ public class RegistrationSteps extends BasicTest {
     @When("I click the Register link")
     public void iClickTheRegisterLink() {
         getDriver().manage().timeouts().implicitlyWait(java.time.Duration.ofSeconds(10));
-        getDriver().findElement(org.openqa.selenium.By.linkText("Register")).click();
+        // Используем XPath вместо linkText — href может содержать jsessionid
+        getDriver().findElement(org.openqa.selenium.By.xpath("//a[contains(@href,'register.htm')]")).click();
     }
 
     @Then("I should see the registration page with title {string}")

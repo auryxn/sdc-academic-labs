@@ -148,7 +148,7 @@ public class CustomerLookupSteps extends BasicTest {
         List<WebElement> errors = getDriver().findElements(By.className("error"));
         Assert.assertEquals(errors.size(), 1, "Expected exactly 1 error message");
         String actualText = errors.get(0).getText().trim();
-        Assert.assertTrue(actualText.contains("SSN is required"),
+        Assert.assertTrue(actualText.contains("Social Security Number is required"),
                 "Error message should contain 'SSN is required', but was: " + actualText);
         logger.info("SSN is required message still visible: '{}'", actualText);
     }
