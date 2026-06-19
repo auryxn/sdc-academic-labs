@@ -1,29 +1,21 @@
 package com.stv.factory.factorypages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
+import org.openqa.selenium.support.PageFactory;
+
 import java.util.List;
 
 public class FactoryMainPage extends FactoryPage {
 
+    // --- Статические элементы (инициализируются один раз через PageFactory) ---
     @FindBy(css = "img[alt='ParaBank']")
     private WebElement paraBankLogo;
 
     @FindBy(linkText = "Register")
     private WebElement registerLink;
-
-    @FindBys({
-        @FindBy(id = "loginPanel"),
-        @FindBy(name = "username")
-    })
-    private WebElement loginUsernameField;
-
-    @FindBy(name = "password")
-    private WebElement loginPasswordField;
-
-    @FindBy(css = "input[value='Log In']")
-    private WebElement loginButton;
 
     @FindBy(linkText = "Log Out")
     private WebElement logoutLink;
@@ -31,14 +23,13 @@ public class FactoryMainPage extends FactoryPage {
     @FindBy(linkText = "About Us")
     private WebElement aboutUsLink;
 
-    @FindBy(css = "p.error")
-    private WebElement loginError;
-
     @FindBy(linkText = "Contact Us")
     private WebElement contactUsLink;
 
     @FindBy(linkText = "Accounts Overview")
     private WebElement accountsOverviewLink;
+
+    // --- Динамические элементы (ищем каждый раз через getDriver, чтобы избежать StaleElementReference) ---
 
     public FactoryContactUsPage clickContactUsLink() {
         contactUsLink.click();
@@ -55,23 +46,25 @@ public class FactoryMainPage extends FactoryPage {
     }
 
     public boolean isLoginUsernameFieldDisplayed() {
-        return loginUsernameField.isDisplayed();
+        return getDriver().findElement(By.cssSelector("input[name='username']")).isDisplayed();
     }
 
     public void login(String username, String password) {
-        loginUsernameField.clear();
-        loginUsernameField.sendKeys(username);
-        loginPasswordField.clear();
-        loginPasswordField.sendKeys(password);
-        loginButton.click();
+        WebElement userField = getDriver().findElement(By.cssSelector("input[name='username']"));
+        WebElement passField = getDriver().findElement(By.cssSelector("input[name='password']"));
+        userField.clear();
+        userField.sendKeys(username);
+        passField.clear();
+        passField.sendKeys(password);
+        getDriver().findElement(By.cssSelector("input[value='Log In']")).click();
     }
 
     public String getLoginErrorText() {
-        return loginError.getText();
+        return getDriver().findElement(By.cssSelector("p.error")).getText();
     }
 
     public String getLoginErrorColor() {
-        return loginError.getCssValue("color");
+        return getDriver().findElement(By.cssSelector("p.error")).getCssValue("color");
     }
 
     public void clickLogout() {
@@ -87,11 +80,10 @@ public class FactoryMainPage extends FactoryPage {
     }
 
     public String getUsernameFieldValue() {
-        return loginUsernameField.getAttribute("value");
+        return getDriver().findElement(By.cssSelector("input[name='username']")).getAttribute("value");
     }
 
     public String getPasswordFieldValue() {
-        return loginPasswordField.getAttribute("value");
+        return getDriver().findElement(By.cssSelector("input[name='password']")).getAttribute("value");
     }
 }
-
