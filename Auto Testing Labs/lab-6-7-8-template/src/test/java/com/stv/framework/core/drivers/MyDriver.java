@@ -21,10 +21,9 @@ public class MyDriver {
     }
 
     private static void setChromeDriver() {
-//        String exePath = "C:\\Chromedriver\\chromedriver.exe";
-//        System.setProperty("webdriver.chrome.driver", exePath);
-//        ChromeOptions options = new ChromeOptions();
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu", "--window-size=1920,1080");
+        driver = new ChromeDriver(options);
     }
 
     /**
