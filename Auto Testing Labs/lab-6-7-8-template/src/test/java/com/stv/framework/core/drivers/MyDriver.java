@@ -21,9 +21,7 @@ public class MyDriver {
     }
 
     private static void setChromeDriver() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu", "--window-size=1920,1080");
-        driver = new ChromeDriver(options);
+        driver = new ChromeDriver();
     }
 
     /**
