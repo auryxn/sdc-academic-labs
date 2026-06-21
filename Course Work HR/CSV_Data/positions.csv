@@ -1,0 +1,17 @@
+position_title,department_name,min_salary,max_salary
+Software Engineer,Engineering,60000,120000
+Senior Developer,Engineering,90000,160000
+QA Engineer,Engineering,50000,95000
+DevOps Engineer,Engineering,80000,140000
+HR Manager,Human Resources,55000,95000
+Recruiter,Human Resources,40000,70000
+Marketing Specialist,Marketing,45000,85000
+Marketing Manager,Marketing,65000,120000
+Financial Analyst,Finance,50000,90000
+Accountant,Finance,45000,80000
+Sales Representative,Sales,35000,75000
+Sales Manager,Sales,60000,130000
+IT Support Specialist,IT Support,40000,75000
+Legal Counsel,Legal,80000,180000
+Operations Manager,Operations,60000,110000
+Data Analyst,Engineering,55000,100000
