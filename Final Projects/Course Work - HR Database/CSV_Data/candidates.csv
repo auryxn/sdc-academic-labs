@@ -1,0 +1,11 @@
+first_name,last_name,email,phone,position_title,status,applied_date,source
+Anna,White,anna.white@email.com,+1-555-2001,Software Engineer,new,2026-01-10,LinkedIn
+Mark,Lee,mark.lee@email.com,+1-555-2002,Senior Developer,screening,2026-01-15,Referral
+Sophie,Clark,sophie.clark@email.com,+1-555-2003,Marketing Specialist,interview,2026-01-20,Indeed
+Kevin,Adams,kevin.adams@email.com,+1-555-2004,Data Analyst,offer,2026-02-01,LinkedIn
+Rachel,Green,rachel.green@email.com,+1-555-2005,Sales Representative,screening,2026-02-05,Company Website
+Daniel,Harris,daniel.harris@email.com,+1-555-2006,QA Engineer,interview,2026-02-10,LinkedIn
+Laura,Nelson,laura.nelson@email.com,+1-555-2007,Financial Analyst,new,2026-02-15,Referral
+Chris,Mitchell,chris.mitchell@email.com,+1-555-2008,DevOps Engineer,hired,2026-02-20,Indeed
+Emma,Roberts,emma.roberts@email.com,+1-555-2009,Accountant,rejected,2026-03-01,LinkedIn
+Tom,Walker,tom.walker@email.com,+1-555-2010,IT Support Specialist,interview,2026-03-05,Company Website
