@@ -1,6 +1,9 @@
 // Home Task 3.2 - Graph database (Neo4j Cypher)
 // Source relational model: PhotoNet.sql
-// Goal: store users, posted photos, likes, comments and following relations as a graph.
+// Goal: store users and the photos they posted as a graph database.
+// Implemented requirements:
+// - all users, photos, likes, comments and followers from PhotoNet.sql are inserted;
+// - commands 1-5 from the assignment are implemented at the end of the file.
 // Note: the source SQL contains the typo 'Jonh'. In this graph script the name is normalized to 'John'
 // because the task text uses 'John'.
 

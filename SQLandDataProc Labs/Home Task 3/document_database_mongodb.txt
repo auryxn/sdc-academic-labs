@@ -1,6 +1,11 @@
 // Home Task 3.1 - Document-oriented database (MongoDB / mongosh)
 // Source relational model: Booking.sql
-// Goal: store hotel rooms and reservations in a document-oriented database.
+// Goal: store hotel room booking data in a document-oriented database.
+// Implemented requirements:
+// - rooms can be displayed by hotel;
+// - full reservation documents include dates, guest list, room size and room facilities;
+// - all data from Booking.sql is inserted;
+// - commands 1-5 from the assignment are implemented at the end of the file.
 
 use hotel_booking_document_db;
 
@@ -179,6 +184,7 @@ db.hotels.find(
 db.reservations.find({}, { _id: 0 });
 
 // 1. Retrieve information on reservations made by Lucas.
+// In this model, main_guest is the person who made the reservation.
 db.reservations.find(
   { "main_guest.guest_name": "Lucas" },
   { _id: 0 }
@@ -193,7 +199,7 @@ db.reservations.updateMany(
   { $set: { notes: "Guest will arrive at the hotel after 10 pm." } }
 );
 
-// 4. In the Redisson hotel, all TVs were replaced with Flat-screen TVss.
+// 4. In the Redisson hotel, all TVs were replaced with Flat-screen TVs.
 db.hotels.updateMany(
   { hotel_name: "Redisson" },
   { $set: { "rooms.$[].facilities.$[tv]": "Flat-screen TVs" } },
