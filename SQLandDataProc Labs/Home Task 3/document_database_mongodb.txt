@@ -1,0 +1,225 @@
+// Home Task 3.1 - Document-oriented database (MongoDB / mongosh)
+// Source relational model: Booking.sql
+// Goal: store hotel rooms and reservations in a document-oriented database.
+
+use hotel_booking_document_db;
+
+db.hotels.drop();
+db.reservations.drop();
+
+// Hotels contain embedded rooms because the common query is:
+// "Display information about rooms in a hotel".
+db.hotels.insertMany([
+  {
+    hotel_id: 1,
+    hotel_name: "Redisson",
+    rooms: [
+      {
+        room_id: 1,
+        room_size: 30,
+        room_capacity: 1,
+        facilities: ["WiFi", "TV"]
+      },
+      {
+        room_id: 2,
+        room_size: 50,
+        room_capacity: 3,
+        facilities: ["TV"]
+      },
+      {
+        room_id: 3,
+        room_size: 45,
+        room_capacity: 2,
+        facilities: ["Minibar", "WiFi"]
+      }
+    ]
+  },
+  {
+    hotel_id: 2,
+    hotel_name: "Park Inn",
+    rooms: [
+      {
+        room_id: 4,
+        room_size: 70,
+        room_capacity: 4,
+        facilities: ["TV", "WiFi", "Minibar"]
+      },
+      {
+        room_id: 5,
+        room_size: 40,
+        room_capacity: 1,
+        facilities: ["TV"]
+      }
+    ]
+  }
+]);
+
+// Reservations are stored with embedded hotel, room and guest data because the common query is:
+// "Display all the information about room reservation".
+db.reservations.insertMany([
+  {
+    booking_id: 1,
+    hotel: {
+      hotel_id: 1,
+      hotel_name: "Redisson"
+    },
+    room: {
+      room_id: 1,
+      room_size: 30,
+      room_capacity: 1,
+      facilities: ["WiFi", "TV"]
+    },
+    main_guest: {
+      guest_id: 5,
+      guest_name: "Lucas",
+      birthday: ISODate("2000-06-01T00:00:00Z")
+    },
+    guests: [
+      {
+        guest_id: 5,
+        guest_name: "Lucas",
+        birthday: ISODate("2000-06-01T00:00:00Z")
+      }
+    ],
+    start_date: ISODate("2024-01-01T00:00:00Z"),
+    end_date: ISODate("2024-01-07T00:00:00Z"),
+    notes: null
+  },
+  {
+    booking_id: 2,
+    hotel: {
+      hotel_id: 2,
+      hotel_name: "Park Inn"
+    },
+    room: {
+      room_id: 4,
+      room_size: 70,
+      room_capacity: 4,
+      facilities: ["TV", "WiFi", "Minibar"]
+    },
+    main_guest: {
+      guest_id: 1,
+      guest_name: "Hamilton",
+      birthday: ISODate("1980-01-01T00:00:00Z")
+    },
+    guests: [
+      {
+        guest_id: 1,
+        guest_name: "Hamilton",
+        birthday: ISODate("1980-01-01T00:00:00Z")
+      },
+      {
+        guest_id: 2,
+        guest_name: "Gery",
+        birthday: ISODate("2005-03-02T00:00:00Z")
+      },
+      {
+        guest_id: 4,
+        guest_name: "Alisa",
+        birthday: ISODate("2010-03-08T00:00:00Z")
+      },
+      {
+        guest_id: 3,
+        guest_name: "Enrika",
+        birthday: ISODate("1985-10-10T00:00:00Z")
+      }
+    ],
+    start_date: ISODate("2024-02-20T00:00:00Z"),
+    end_date: ISODate("2024-02-29T00:00:00Z"),
+    notes: "with a cat"
+  },
+  {
+    booking_id: 3,
+    hotel: {
+      hotel_id: 1,
+      hotel_name: "Redisson"
+    },
+    room: {
+      room_id: 3,
+      room_size: 45,
+      room_capacity: 2,
+      facilities: ["Minibar", "WiFi"]
+    },
+    main_guest: {
+      guest_id: 3,
+      guest_name: "Enrika",
+      birthday: ISODate("1985-10-10T00:00:00Z")
+    },
+    guests: [
+      {
+        guest_id: 3,
+        guest_name: "Enrika",
+        birthday: ISODate("1985-10-10T00:00:00Z")
+      },
+      {
+        guest_id: 5,
+        guest_name: "Lucas",
+        birthday: ISODate("2000-06-01T00:00:00Z")
+      }
+    ],
+    start_date: ISODate("2024-05-01T00:00:00Z"),
+    end_date: ISODate("2024-05-05T00:00:00Z"),
+    notes: "additional pillow"
+  }
+]);
+
+// Useful indexes for the required queries.
+db.hotels.createIndex({ hotel_name: 1 }, { unique: true });
+db.reservations.createIndex({ "main_guest.guest_name": 1 });
+db.reservations.createIndex({ "hotel.hotel_name": 1 });
+db.reservations.createIndex({ "guests.guest_name": 1 });
+
+// Example query: display information about rooms in a hotel.
+db.hotels.find(
+  { hotel_name: "Redisson" },
+  { _id: 0, hotel_name: 1, rooms: 1 }
+);
+
+// Example query: display all information about reservations.
+db.reservations.find({}, { _id: 0 });
+
+// 1. Retrieve information on reservations made by Lucas.
+db.reservations.find(
+  { "main_guest.guest_name": "Lucas" },
+  { _id: 0 }
+);
+
+// 2. Enrika cancelled her reservation, so remove the reservation made by Enrika.
+db.reservations.deleteMany({ "main_guest.guest_name": "Enrika" });
+
+// 3. Add a note to Lucas's reservation that he will arrive after 10 pm.
+db.reservations.updateMany(
+  { "main_guest.guest_name": "Lucas" },
+  { $set: { notes: "Guest will arrive at the hotel after 10 pm." } }
+);
+
+// 4. In the Redisson hotel, all TVs were replaced with Flat-screen TVss.
+db.hotels.updateMany(
+  { hotel_name: "Redisson" },
+  { $set: { "rooms.$[].facilities.$[tv]": "Flat-screen TVs" } },
+  { arrayFilters: [{ tv: "TV" }] }
+);
+
+db.reservations.updateMany(
+  { "hotel.hotel_name": "Redisson" },
+  { $set: { "room.facilities.$[tv]": "Flat-screen TVs" } },
+  { arrayFilters: [{ tv: "TV" }] }
+);
+
+// 5. Calculate how many bookings were made in each hotel.
+db.reservations.aggregate([
+  {
+    $group: {
+      _id: "$hotel.hotel_name",
+      booking_count: { $sum: 1 }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      hotel_name: "$_id",
+      booking_count: 1
+    }
+  },
+  { $sort: { hotel_name: 1 } }
+]);

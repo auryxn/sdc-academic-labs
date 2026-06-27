@@ -1,0 +1,135 @@
+// Home Task 3.2 - Graph database (Neo4j Cypher)
+// Source relational model: PhotoNet.sql
+// Goal: store users, posted photos, likes, comments and following relations as a graph.
+// Note: the source SQL contains the typo 'Jonh'. In this graph script the name is normalized to 'John'
+// because the task text uses 'John'.
+
+MATCH (n) DETACH DELETE n;
+
+CREATE CONSTRAINT user_name_unique IF NOT EXISTS
+FOR (u:User)
+REQUIRE u.name IS UNIQUE;
+
+CREATE CONSTRAINT photo_file_unique IF NOT EXISTS
+FOR (p:Photo)
+REQUIRE p.file IS UNIQUE;
+
+// Users
+CREATE
+  (:User {user_id: 1, name: 'John'}),
+  (:User {user_id: 2, name: 'Mary'}),
+  (:User {user_id: 3, name: 'Adrian'}),
+  (:User {user_id: 4, name: 'Claire'}),
+  (:User {user_id: 5, name: 'Holly'});
+
+// Photos and POSTED relationships
+MATCH (john:User {name: 'John'}),
+      (mary:User {name: 'Mary'}),
+      (adrian:User {name: 'Adrian'}),
+      (claire:User {name: 'Claire'})
+CREATE
+  (p1:Photo {photo_id: 1, file: 'file_name1'}),
+  (p2:Photo {photo_id: 2, file: 'file_name2'}),
+  (p3:Photo {photo_id: 3, file: 'file_name3'}),
+  (p4:Photo {photo_id: 4, file: 'file_name4'}),
+  (p5:Photo {photo_id: 5, file: 'file_name5'}),
+  (p6:Photo {photo_id: 6, file: 'file_name6'}),
+  (p7:Photo {photo_id: 7, file: 'file_name7'}),
+  (p8:Photo {photo_id: 8, file: 'file_name8'}),
+  (john)-[:POSTED]->(p1),
+  (claire)-[:POSTED]->(p2),
+  (mary)-[:POSTED]->(p3),
+  (john)-[:POSTED]->(p4),
+  (adrian)-[:POSTED]->(p5),
+  (claire)-[:POSTED]->(p6),
+  (claire)-[:POSTED]->(p7),
+  (mary)-[:POSTED]->(p8);
+
+// Likes
+MATCH (john:User {name: 'John'}),
+      (mary:User {name: 'Mary'}),
+      (adrian:User {name: 'Adrian'}),
+      (claire:User {name: 'Claire'}),
+      (holly:User {name: 'Holly'}),
+      (p1:Photo {file: 'file_name1'}),
+      (p2:Photo {file: 'file_name2'}),
+      (p3:Photo {file: 'file_name3'}),
+      (p4:Photo {file: 'file_name4'}),
+      (p6:Photo {file: 'file_name6'}),
+      (p7:Photo {file: 'file_name7'}),
+      (p8:Photo {file: 'file_name8'})
+CREATE
+  (mary)-[:LIKES {like_id: 1, dt: date('2024-01-26')}]->(p1),
+  (adrian)-[:LIKES {like_id: 2, dt: date('2024-03-13')}]->(p1),
+  (holly)-[:LIKES {like_id: 3, dt: date('2024-02-04')}]->(p1),
+  (john)-[:LIKES {like_id: 4, dt: date('2024-01-25')}]->(p2),
+  (claire)-[:LIKES {like_id: 5, dt: date('2024-01-25')}]->(p3),
+  (holly)-[:LIKES {like_id: 6, dt: date('2024-03-15')}]->(p3),
+  (holly)-[:LIKES {like_id: 7, dt: date('2024-03-20')}]->(p4),
+  (mary)-[:LIKES {like_id: 8, dt: date('2024-02-10')}]->(p6),
+  (john)-[:LIKES {like_id: 9, dt: date('2024-02-19')}]->(p7),
+  (mary)-[:LIKES {like_id: 10, dt: date('2024-01-26')}]->(p7),
+  (adrian)-[:LIKES {like_id: 11, dt: date('2024-01-12')}]->(p7),
+  (holly)-[:LIKES {like_id: 12, dt: date('2024-03-05')}]->(p7),
+  (claire)-[:LIKES {like_id: 13, dt: date('2024-03-18')}]->(p8),
+  (adrian)-[:LIKES {like_id: 14, dt: date('2024-02-11')}]->(p8);
+
+// Comments
+MATCH (john:User {name: 'John'}),
+      (mary:User {name: 'Mary'}),
+      (adrian:User {name: 'Adrian'}),
+      (holly:User {name: 'Holly'}),
+      (p2:Photo {file: 'file_name2'}),
+      (p3:Photo {file: 'file_name3'}),
+      (p8:Photo {file: 'file_name8'})
+CREATE
+  (adrian)-[:COMMENTED {comment_id: 1, text: 'Good'}]->(p2),
+  (john)-[:COMMENTED {comment_id: 2, text: 'Excellent'}]->(p3),
+  (holly)-[:COMMENTED {comment_id: 3, text: 'Not bad'}]->(p3),
+  (john)-[:COMMENTED {comment_id: 4, text: 'Ok'}]->(p8),
+  (mary)-[:COMMENTED {comment_id: 5, text: 'Cool'}]->(p8);
+
+// Followers from SQL are represented as: (follower)-[:FOLLOWS]->(user)
+MATCH (john:User {name: 'John'}),
+      (mary:User {name: 'Mary'}),
+      (adrian:User {name: 'Adrian'}),
+      (claire:User {name: 'Claire'}),
+      (holly:User {name: 'Holly'})
+CREATE
+  (mary)-[:FOLLOWS]->(john),
+  (adrian)-[:FOLLOWS]->(john),
+  (claire)-[:FOLLOWS]->(john),
+  (john)-[:FOLLOWS]->(mary),
+  (adrian)-[:FOLLOWS]->(mary),
+  (mary)-[:FOLLOWS]->(adrian),
+  (claire)-[:FOLLOWS]->(adrian),
+  (john)-[:FOLLOWS]->(claire),
+  (holly)-[:FOLLOWS]->(adrian);
+
+// 1. Change the comment text from Holly under photo 'file_name3' to 'Very Good'.
+MATCH (:User {name: 'Holly'})-[c:COMMENTED]->(:Photo {file: 'file_name3'})
+SET c.text = 'Very Good'
+RETURN c.comment_id AS comment_id, c.text AS new_text;
+
+// 2. John unfollowed all users he used to follow.
+MATCH (:User {name: 'John'})-[f:FOLLOWS]->(:User)
+DELETE f;
+
+// 3. Display all photos of the users whom Mary follows.
+MATCH (:User {name: 'Mary'})-[:FOLLOWS]->(followed:User)-[:POSTED]->(photo:Photo)
+RETURN followed.name AS user_name, photo.file AS photo_file
+ORDER BY followed.name, photo.file;
+
+// 4. Return the count of likes placed on Claire's photos.
+MATCH (:User {name: 'Claire'})-[:POSTED]->(photo:Photo)<-[like:LIKES]-(:User)
+RETURN count(like) AS likes_on_claire_photos;
+
+// 5. Recommend users Holly could follow.
+// Logic: Holly follows some user X. Other users who also follow X may point to additional users
+// that Holly does not follow yet. In the given data, Claire and Holly both follow Adrian,
+// and Claire also follows John, so John is recommended to Holly.
+MATCH (holly:User {name: 'Holly'})-[:FOLLOWS]->(common:User)<-[:FOLLOWS]-(similar:User)-[:FOLLOWS]->(recommended:User)
+WHERE recommended <> holly
+  AND NOT (holly)-[:FOLLOWS]->(recommended)
+RETURN DISTINCT recommended.name AS recommended_user
+ORDER BY recommended_user;
